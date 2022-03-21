@@ -283,10 +283,10 @@ const NP = styled.div`
   position: absolute; top: 50%; transform: translateY(-50%);
 `;
 
-const NPBtn = styled.button`
+const NPBtn = styled(Btn)`
   width: 20px; height: 20px; border-radius: 50%;
   background-color: black; color: #FFF;
-  position: absolute;
+  position: absolute; 
 
   &:disabled {
     background: rgba(0,0,0,0.2);
@@ -294,7 +294,8 @@ const NPBtn = styled.button`
 `;
 
 const Next = styled(NPBtn)`
-  right: 10px;
+  /* right: 10px; */
+  
 
   &::after {
     content: '>';
@@ -305,7 +306,7 @@ const Next = styled(NPBtn)`
 `;
 
 const Prev = styled(NPBtn)`
-  left: 10px;
+  /* left: 10px; */
   
   &::after {
     content: '<';

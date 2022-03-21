@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Reset } from 'styled-reset';
 import styled from 'styled-components'
 
@@ -12,6 +12,28 @@ const App = () => {
     {background: 'yellow'},
     {background: 'green'}
   ]
+  
+  const bgArr2 = [
+    {background: 'red'},
+    {background: 'orange'},
+    {background: 'yellow'},
+    {background: 'green'},
+    {background: 'blue'},
+    {background: 'navy'},
+    {background: 'violet'}
+  ]
+  
+  const bgArr3 = [
+    {background: 'salmon'},
+    {background: 'tomato'},
+  ]
+  
+  const bgArr4 = [
+    {background: 'red'},
+    {background: 'orange'},
+    {background: 'yellow'},
+  ]
+  
 
   return (
     <Container>
@@ -25,7 +47,33 @@ const App = () => {
           }
         </Slider>
       </SliderCover>
-      
+      <SliderCover>
+        <Slider np>
+          {
+            bgArr2.map((item,index) => {
+              return <Slide key={index}><DIV style={item}></DIV></Slide>
+            })
+          }
+        </Slider>
+      </SliderCover>
+      <SliderCover>
+        <Slider paging>
+          {
+            bgArr3.map((item,index) => {
+              return <Slide key={index}><DIV style={item}></DIV></Slide>
+            })
+          }
+        </Slider>
+      </SliderCover>
+      <SliderCover>
+        <Slider>
+          {
+            bgArr4.map((item,index) => {
+              return <Slide key={index}><DIV style={item}></DIV></Slide>
+            })
+          }
+        </Slider>
+      </SliderCover>
     </Container>
   );
 };
@@ -45,8 +93,21 @@ const DIV = styled.div`
 
 const SliderCover = styled.div`
   width: 500px;
-  margin: 0 auto;
-  /* &.app-slider .paging .btn { background: red; } */
+  margin: 0 auto 100px;
+  &.app-slider .paging .btn { background: red; }
   
-  /* &.app-slider .paging .btn.active { background: blue; } */
+  &.app-slider .paging .btn.active { background: blue; }
+
+  &.app-slider .next { 
+    background: pink; 
+    width: 50px; height: 50px; 
+    left: 100%; 
+    &::after {  color: red; } 
+  }
+  &.app-slider .prev { 
+    background: pink; 
+    width: 50px; height: 50px;
+    right: 100%; 
+    &::after {  color: red; } 
+  }
 `;
