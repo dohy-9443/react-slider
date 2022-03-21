@@ -1,15 +1,17 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import styled from 'styled-components';
 
 export const Slide = ({children}) => <ImgSlide className='slide'>{children}</ImgSlide>
 
 
-export const Slider = ({children, pageNum, np, paging, autoplay}) => {
+export const Slider = ({children, pageNum, np, paging, autoplay, division}) => {
 
   const wrapEl = useRef(null)
   const pagingBtns = useRef([])
   const nextEl = useRef(null)
   const prevEl = useRef(null)
+
+  const [slideCount, setSlideCount] = useState(1);
 
   // autoplay는 잠정 중단
   const timer = (w, i, page) => {
@@ -25,6 +27,7 @@ export const Slider = ({children, pageNum, np, paging, autoplay}) => {
           // 페이징 현재 index한테 active
           page[i].classList.add('active');
         }
+        setSlideCount(i + 1)
         w.style.transform = `translateX(${-i * 100/children.length}%)`;
       } else if (i === children.length) {
         i = 0;
@@ -36,6 +39,7 @@ export const Slider = ({children, pageNum, np, paging, autoplay}) => {
           // 페이징 현재 index한테 active
           page[i].classList.add('active');
         }
+        setSlideCount(1)
         w.style.transform = `translateX(${-i * 100/children.length}%)`;
       }
     }, 3000)
@@ -51,6 +55,7 @@ export const Slider = ({children, pageNum, np, paging, autoplay}) => {
       // 페이징 현재 index한테 active
       page[index].classList.add('active');
     }
+    
     if (a) {
       // autoplay는 잠정 중단
       // timer(wrap, index, page)
@@ -58,6 +63,7 @@ export const Slider = ({children, pageNum, np, paging, autoplay}) => {
     } else {
       // 슬라이드 현재 index만큼 이동
       wrap.style.transform = `translateX(${-index * 100/children.length}%)`;
+      setSlideCount(index + 1)
     }
     
   }
@@ -71,9 +77,7 @@ export const Slider = ({children, pageNum, np, paging, autoplay}) => {
     w.style.transform = `translateX(0%)`; // 시작할 때 슬라이드 감싸는 div translate 값
     
     if (autoplay) {
-      setTimeout(() => {
-        resetPW(pagingBtns.current, i, w, p, autoplay)
-      }, 2000)
+      resetPW(pagingBtns.current, i, w, p, autoplay)
     }
 
 
@@ -265,6 +269,10 @@ export const Slider = ({children, pageNum, np, paging, autoplay}) => {
             })
           }
         </Paging>
+      }
+      {
+        division &&
+        <Paging className='division'>{slideCount}/{children.length}</Paging>
       }
       {
         np && 

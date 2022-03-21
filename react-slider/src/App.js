@@ -38,7 +38,7 @@ const App = () => {
     <Container>
       <Reset/>
       <SliderCover className='app-slider'>
-        <Slider paging np pageNum>
+        <Slider division np autoplay>
           {
             bgArr.map((item,index) => {
               return <Slide key={index}><DIV style={item}>손대지마시오</DIV></Slide>
@@ -56,7 +56,7 @@ const App = () => {
         </Slider>
       </SliderCover>
       <SliderCover>
-        <Slider paging>
+        <Slider division>
           {
             bgArr3.map((item,index) => {
               return <Slide key={index}><DIV style={item}></DIV></Slide>
