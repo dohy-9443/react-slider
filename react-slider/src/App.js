@@ -46,7 +46,7 @@ const DIV = styled.div`
 const SliderCover = styled.div`
   width: 500px;
   margin: 0 auto;
-  &.app-slider .paging .btn { background: red; }
+  /* &.app-slider .paging .btn { background: red; } */
   
-  &.app-slider .paging .btn.active { background: blue; }
+  /* &.app-slider .paging .btn.active { background: blue; } */
 `;
