@@ -1,17 +1,48 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 
 export const Slide = ({children}) => <ImgSlide className='slide'>{children}</ImgSlide>
 
-export const Slider = ({children, pageNum, np, paging}) => {
+
+export const Slider = ({children, pageNum, np, paging, autoplay}) => {
 
   const wrapEl = useRef(null)
   const pagingBtns = useRef([])
   const nextEl = useRef(null)
   const prevEl = useRef(null)
 
-  function resetPW (page, index, wrap, children) {
-    // paging 초기화
+  // autoplay는 잠정 중단
+  const timer = (w, i, page) => {
+    
+    setInterval(() => {
+      i++;
+      if (i < children.length) {
+        if (page && page.length > 0) {
+          page.forEach((reItem) => {
+            reItem.classList.remove('active');
+          })
+          
+          // 페이징 현재 index한테 active
+          page[i].classList.add('active');
+        }
+        w.style.transform = `translateX(${-i * 100/children.length}%)`;
+      } else if (i === children.length) {
+        i = 0;
+        if (page && page.length > 0) {
+          page.forEach((reItem) => {
+            reItem.classList.remove('active');
+          })
+          
+          // 페이징 현재 index한테 active
+          page[i].classList.add('active');
+        }
+        w.style.transform = `translateX(${-i * 100/children.length}%)`;
+      }
+    }, 3000)
+    
+  }
+
+  function resetPW (page, index, wrap, children, a) {
     if (page && page.length > 0) {
       page.forEach((reItem) => {
         reItem.classList.remove('active');
@@ -20,11 +51,15 @@ export const Slider = ({children, pageNum, np, paging}) => {
       // 페이징 현재 index한테 active
       page[index].classList.add('active');
     }
+    if (a) {
+      // autoplay는 잠정 중단
+      // timer(wrap, index, page)
+      
+    } else {
+      // 슬라이드 현재 index만큼 이동
+      wrap.style.transform = `translateX(${-index * 100/children.length}%)`;
+    }
     
-    
-    
-    // 슬라이드 현재 index만큼 이동
-    wrap.style.transform = `translateX(${-index * 100/children.length}%)`;
   }
 
   function imgslide(w, p) {
@@ -35,6 +70,13 @@ export const Slider = ({children, pageNum, np, paging}) => {
     w.style.width = `${p.length * 100}%`; // 시작할 때 슬라이드 감싸는 div 넓이값
     w.style.transform = `translateX(0%)`; // 시작할 때 슬라이드 감싸는 div translate 값
     
+    if (autoplay) {
+      setTimeout(() => {
+        resetPW(pagingBtns.current, i, w, p, autoplay)
+      }, 2000)
+    }
+
+
     if (pagingBtns && pagingBtns.current.length > 0) {
       pagingBtns.current[0].classList.add('active')
 
@@ -46,7 +88,7 @@ export const Slider = ({children, pageNum, np, paging}) => {
           // i 에 현재 index 담고
           i = index;
 
-          resetPW(pagingBtns.current, i, w, p)
+          resetPW(pagingBtns.current, i, w, p, autoplay)
           
         })
 
@@ -83,13 +125,13 @@ export const Slider = ({children, pageNum, np, paging}) => {
   
           i++; // i = i + 1
           
-          resetPW(pagingBtns.current, i, w, p)
+          resetPW(pagingBtns.current, i, w, p, autoplay)
   
           // i가 슬라이드 갯수 - 2 적을 때 ( 마지막 슬라이드 )
         } else if (i === p.length - 2) {
           i = p.length - 1; // 맨 마지막 index
   
-          resetPW(pagingBtns.current, i, w, p)
+          resetPW(pagingBtns.current, i, w, p, autoplay)
         }
   
       // 시작값이 마지막값보다 작으면
@@ -100,13 +142,13 @@ export const Slider = ({children, pageNum, np, paging}) => {
         if (0 < i && i <= p.length - 1) {
           i--; // i = i - 1;
           
-          resetPW(pagingBtns.current, i, w, p)
+          resetPW(pagingBtns.current, i, w, p, autoplay)
   
           // i 가 0 일 때
         } else if (i === 0) {
           i = 0;
   
-          resetPW(pagingBtns.current, i, w, p)
+          resetPW(pagingBtns.current, i, w, p, autoplay)
         }
   
       }
@@ -132,12 +174,12 @@ export const Slider = ({children, pageNum, np, paging}) => {
         if (0 <= i && i < p.length - 2) {
           i++;
           
-          resetPW(pagingBtns.current, i, w, p)
+          resetPW(pagingBtns.current, i, w, p, autoplay)
 
         } else if (i === p.length - 2) {
           i = p.length - 1;
 
-          resetPW(pagingBtns.current, i, w, p)
+          resetPW(pagingBtns.current, i, w, p, autoplay)
 
         }
 
@@ -145,12 +187,12 @@ export const Slider = ({children, pageNum, np, paging}) => {
         if (0 < i && i <= p.length - 1) {
           i--;
           
-          resetPW(pagingBtns.current, i, w, p)
+          resetPW(pagingBtns.current, i, w, p, autoplay)
 
         } else if (i === 0) {
           i = 0;
 
-          resetPW(pagingBtns.current, i, w, p)
+          resetPW(pagingBtns.current, i, w, p, autoplay)
 
         }
 
@@ -165,14 +207,14 @@ export const Slider = ({children, pageNum, np, paging}) => {
         if (i >= 0 && i < p.length - 1) {
           i++;
           
-          resetPW(pagingBtns.current, i, w, p)
+          resetPW(pagingBtns.current, i, w, p, autoplay)
 
           
   
         } else if (i === p.length) {
           i = p.length
           
-          resetPW(pagingBtns.current, i, w, p)
+          resetPW(pagingBtns.current, i, w, p, autoplay)
 
         }
       })
@@ -187,12 +229,12 @@ export const Slider = ({children, pageNum, np, paging}) => {
         if (i > 0 && i <= p.length - 1) {
           i--;
   
-          resetPW(pagingBtns.current, i, w, p)
+          resetPW(pagingBtns.current, i, w, p, autoplay)
 
         } else if (i === 0) {
           i = 0;
   
-          resetPW(pagingBtns.current, i, w, p)
+          resetPW(pagingBtns.current, i, w, p, autoplay)
 
         }
       })
@@ -201,7 +243,10 @@ export const Slider = ({children, pageNum, np, paging}) => {
   }
 
   useEffect(() => {
+    
     imgslide(wrapEl.current, children);
+    
+    
   }, [])
 
   return (

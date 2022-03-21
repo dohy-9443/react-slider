@@ -3,7 +3,6 @@ import { Reset } from 'styled-reset';
 import styled from 'styled-components'
 
 import { Slider, Slide } from './slider/Slider';
-
 const App = () => {
 
   const bgArr = [
@@ -42,12 +41,12 @@ const App = () => {
         <Slider paging np pageNum>
           {
             bgArr.map((item,index) => {
-              return <Slide key={index}><DIV style={item}></DIV></Slide>
+              return <Slide key={index}><DIV style={item}>손대지마시오</DIV></Slide>
             })
           }
         </Slider>
       </SliderCover>
-      <SliderCover>
+      <SliderCover className='app-slider2'>
         <Slider np>
           {
             bgArr2.map((item,index) => {
@@ -109,5 +108,8 @@ const SliderCover = styled.div`
     width: 50px; height: 50px;
     right: 100%; 
     &::after {  color: red; } 
+  }
+  &.app-slider2 .next {
+    right: 0;
   }
 `;
